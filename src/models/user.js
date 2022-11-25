@@ -3,7 +3,10 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
+const RootCollection = require('./rootcollection')
+
 const userSchema = new mongoose.Schema({
+  // ---------- Model info ----------
   name: {
     type: String,
     required: true,
@@ -27,14 +30,25 @@ const userSchema = new mongoose.Schema({
     minlength: 7,
     trim: true
   },
+  // ---------- End ----------
+  // ---------- Tokens ----------
   tokens: [{
     token: {
       type: String,
       required: true
     }
   }]
+  // ---------- End ----------
 }, {
-  timestamps: true
+  timestamps: true,
+  toJson: { virtuals: true },
+  toObject: { virtuals: true }
+})
+
+userSchema.virtual('rootcollections', {
+  ref: 'RootCollection',
+  localField: '_id',
+  foreignField: 'owner'
 })
 
 userSchema.methods.generateAuthToken = async function () {
@@ -62,6 +76,12 @@ userSchema.pre('save', async function (next) {
   if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8)
   }
+  next()
+})
+
+userSchema.pre('remove', async function (next) {
+  const user = this
+  await RootCollection.deleteMany({ owner: user._id })
   next()
 })
 

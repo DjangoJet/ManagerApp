@@ -1,9 +1,5 @@
 const User = require('../models/user')
 
-exports.getUser = async (req, res) => {
-  res.status(200).send("Hi from inside controler")
-}
-
 exports.createUser = async (req, res) => {
   const user = new User(req.body)
   try {
