@@ -15,7 +15,7 @@ exports.loginUser = async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password)
     const token = await user.generateAuthToken()
-    res.send({ user, token })
+    res.status(201).send({ user, token })
   } catch (e) {
     res.status(400).send(e)
   }
@@ -27,7 +27,7 @@ exports.logoutUser = async (req, res) => {
       return token.token !== req.token
     })
     await req.user.save()
-    res.send()
+    res.status(201).send()
   } catch (e) {
     res.status(500).send(e)
   }
@@ -43,7 +43,7 @@ exports.updateUser = async (req, res) => {
   try {
     updates.forEach((update) => req.user[update] = req.body[update])
     await req.user.save()
-    res.send(req.user)
+    res.status(201).send(req.user)
   } catch (e) {
     res.status(500).send(e)
   }
@@ -52,7 +52,7 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     await req.user.remove()
-    res.send(req.user)
+    res.status(201).send(req.user)
   } catch (e) {
     res.status(400).send(e)
   }

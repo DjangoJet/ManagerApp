@@ -8,6 +8,8 @@ router.get('/rootcollections', auth, rootcollectionController.getRootCollections
 
 router.get('/rootcollections/:id', auth, rootcollectionController.getRootCollection)
 
+router.get('/rootcollections/collections/:id', auth, rootcollectionController.getCollections)
+
 router.post('/rootcollections', auth, rootcollectionController.createRootCollection)
 
 router.patch('/rootcollections/:id', auth, rootcollectionController.updateRootCollection)

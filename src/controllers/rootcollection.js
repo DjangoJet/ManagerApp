@@ -1,7 +1,7 @@
 const express = require('express')
 
 const RootCollection = require('../models/rootcollection')
-const User = require('../models/user')
+const Collection = require('../models/collection')
 
 exports.getRootCollections = async (req, res) => {
   try {
@@ -19,6 +19,17 @@ exports.getRootCollection = async (req, res) => {
       return res.status(400).send({ error: `Can't find rootcollection by given id` })
     }
     res.status(201).send(rootcollection)
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+exports.getCollections = async (req, res) => {
+  try {
+    const rootcollection = await RootCollection.findOne({
+      _id: req.params.id, owner: req.user._id 
+    }).populate('collections')
+    res.status(201).send(rootcollection.collections)
   } catch (e) {
     res.status(400).send(e)
   }
@@ -49,7 +60,7 @@ exports.updateRootCollection = async (req, res) => {
     const rootCollection = await RootCollection.findOne({ _id: req.params.id, owner: req.user._id })
     updates.forEach((update) => rootCollection[update] = req.body[update])
     await rootCollection.save()
-    res.send(rootCollection)
+    res.status(201).send(rootCollection)
   } catch (e) {
     res.status(500).send(e)
   }
@@ -59,10 +70,10 @@ exports.deleteRootCollection = async (req, res) => {
   try {
     const rootcollection = await RootCollection.findOne({ _id: req.params.id, owner: req.user._id })
     if (!rootcollection) {
-      res.status(400).send({ error: `Can't find rootcollection for delete` })
+      return res.status(400).send({ error: `Can't find rootcollection for delete` })
     }
     await rootcollection.remove()
-    res.send(rootcollection)
+    res.status(201).send(rootcollection)
   } catch (e) {
     res.status(400).send(e)
   }

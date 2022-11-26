@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const User = require('./user')
+const Collection = require('./collection')
 
 const rootcollectionSchema = new mongoose.Schema({
   name: {
@@ -16,6 +17,18 @@ const rootcollectionSchema = new mongoose.Schema({
   timestamps: true,
   toJson: { virtuals: true },
   toObject: { virtuals: true }
+})
+
+rootcollectionSchema.virtual('collections', {
+  ref: 'Collection',
+  localField: '_id',
+  foreignField: 'rootCollection'
+})
+
+rootcollectionSchema.pre('remove', async function (next) {
+  const rootcollection = this
+  await Collection.deleteMany({ rootcollection: rootcollection._id })
+  next()
 })
 
 const RootCollection = mongoose.model('RootCollection', rootcollectionSchema)
