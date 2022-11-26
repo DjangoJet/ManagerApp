@@ -21,7 +21,7 @@ body: {
 
 ## Logowanie użytkownika (POST)
 
-### **URL:** ```/users/login```
+**URL:** ```/users/login```
 
 **Body:**
 
@@ -96,7 +96,7 @@ body: {
 
 ## Pobranie konkretnej rootcollection użytkownika (GET)
 
-**URL: ** ```/rootcollections/:id```
+**URL:** ```/rootcollections/:id```
 
 **Auth:** Bearer Token
 
@@ -118,9 +118,9 @@ body: {
 
 ## Stworzenie nowej rootcollection użytkownika (POST)
 
-**URL: ** ```/rootcollections```
+**URL:** ```/rootcollections```
 
-**Auth: ** Bearer Token
+**Auth:** Bearer Token
 
 **Body:**
 
@@ -166,6 +166,17 @@ body: {
 - ```status: 400 - message: { error }```
 
 # Endpoint: /collections
+
+## Pobranie wszystkich item należących do collection użytkownika (GET)
+
+**URL:** ```/collections/items/:id```
+
+**Auth:** Bearer Token
+
+**Responses:**
+
+- ```status: 400 - message: { error }```
+- ```status: 201 - message: { items }```
 
 ## Stworzenie nowej collection użytkownika (POST)
 
@@ -221,3 +232,58 @@ body: {
 - ```status: 400 - message: { error: 'Can't find collection for delete' }```
 - ```status: 400 - message: { error }```
 - ```status: 201 - message: { collection }```
+
+# Endpoint: /items
+
+## Stworzenie nowego item użytkownika (POST)
+
+**URL:** ```/items```
+
+**Auth:** Bearer Token
+
+**Body:**
+
+```
+body: {
+	name: String,
+	parent_collection: ObjectID
+}
+```
+
+**Responses:**
+
+- ```status: 400 - message: { error: 'Can't find collection by given id' }```
+- ```status: 400 - message: { error }```
+- ```status: 201 - message: { item }```
+
+## Update item użytkownika (PATCH)
+
+**URL:** ```/items/:id```
+
+**Auth:** Bearer Token
+
+**Body:**
+
+```
+body: {
+	name: String
+}
+```
+
+**Responses:**
+
+- ```status: 400 - message: { error: 'Invalid updates' }```
+- ```status: 500 - message: { error }```
+- ```status: 201 - message: { item }```
+
+## Usunięcie item użytkownika (DELETE)
+
+**URL:** ```/items/:id```
+
+**Auth:** Bearer Token
+
+**Responses:**
+
+- ```status: 400 - message: { error: 'Can't find item for delete' }```
+- ```status: 400 - message: { error }```
+- ```status: 201 - message: { item }```

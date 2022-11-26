@@ -3,6 +3,17 @@ const express = require('express')
 const Collection = require('../models/collection')
 const RootCollection = require('../models/rootcollection')
 
+exports.getItems = async (req, res) => {
+  try {
+    const collection = await Collection.findOne({
+      _id: req.params.id, owner: req.user._id
+    }).populate('items')
+    res.status(201).send(collection.items)
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 exports.createCollection = async (req, res) => {
   try {
     // Checking if rootcollection exists
