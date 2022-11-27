@@ -1,18 +1,19 @@
 const mongoose = require('mongoose')
 
-const itemSchema = new mongoose.Schema({
+const attributeSchema = new mongoose.Schema({
   name: {
     type: String,
     require: true,
     trim: true
   },
-  parent_collection: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Collection'
-  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  parent_collection: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+    ref: 'Collection'
   }
 }, {
   timestamps: true,
@@ -20,6 +21,6 @@ const itemSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 })
 
-const Item = mongoose.model('Item', itemSchema)
+const Attribute = mongoose.model('Attribute', attributeSchema)
 
-module.exports = Item
+module.exports = Attribute

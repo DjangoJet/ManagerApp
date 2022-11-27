@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Attribute = require('./attribute')
 const Item = require('./item')
 
 const collectionSchema = new mongoose.Schema({
@@ -23,7 +24,7 @@ const collectionSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true,
-  toJson: { virtuals: true },
+  toJSON: { virtuals: true },
   toObject: { virtuals: true }
 })
 
@@ -35,13 +36,19 @@ collectionSchema.virtual('items', {
 
 collectionSchema.pre('remove', async function (next) {
   const collection = this
+  
   // delete children collections
   const collections = await Collection.find({
     parent: collection._id, rootcollection: collection.rootcollection
   })
   await collections.forEach(collection => collection.remove()) // is it asynchronic ?
+
   // delete collection items
-  await Item.deleteMany({ collection: collection._id })
+  await Item.deleteMany({ parent_collection: collection._id })
+
+  // delete collection attribute
+  await Attribute.deleteMany({ parent_collection: collection._id })
+
   next()
 })
 

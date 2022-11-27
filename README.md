@@ -1,10 +1,12 @@
+[TOC]
+
 # Endpoint: /users
 
 ## Tworzenie użytkownika (POST)
 
 **URL:** ```/users```
 
-### Body:
+**Body:**
 
 ```
 body: {
@@ -14,7 +16,7 @@ body: {
 }
 ```
 
-### Responses:
+**Responses:**
 
 - ```status: 201 - message: { user, token }```
 - ```status: 400 - message: { error }```
@@ -287,3 +289,58 @@ body: {
 - ```status: 400 - message: { error: 'Can't find item for delete' }```
 - ```status: 400 - message: { error }```
 - ```status: 201 - message: { item }```
+
+# Endpoint: /attributes
+
+## Stworzenie nowego attribute użytkownika (POST)
+
+**URL:** ```/attributes```
+
+**Auth:** Bearer Token
+
+**Body:**
+
+```
+body: {
+	name: String,
+	parent_collection: ObjectID
+}
+```
+
+**Responses:**
+
+- ```status: 400 - message: { error: 'Can't find collection by given id' }```
+- ```status: 400 - message: { error }```
+- ```status: 201 - message: { attribute }```
+
+## Update attribute użytkowanika (PATCH)
+
+**URL:** ```/attributes/:id```
+
+**Auth:** Bearer Token
+
+**Body:**
+
+```
+body: {
+	name: String
+}
+```
+
+**Responses:**
+
+- ```status: 400 - message: { error: 'Invalid updates' }```
+- ```status: 500 - message: { error }```
+- ```status: 201 - message: { attribute }```
+
+## Usunięcie attribute użytkownika (DELETE)
+
+**URL:** ```/attributes/:id```
+
+**Auth:** Bearer Token
+
+**Responses:**
+
+- ```status: 400 - message: { error: 'Can't find attribute for delete' }```
+- ```status: 400 - message: { error }```
+- ```status: 201 - message: { attribute }```
