@@ -4,6 +4,10 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const RootCollection = require('./rootcollection')
+const Collection = require('./collection')
+const Item = require('./item')
+const Attribute = require('./attribute')
+const Value = require('./value')
 
 const userSchema = new mongoose.Schema({
   // ---------- Model info ----------
@@ -82,6 +86,11 @@ userSchema.pre('save', async function (next) {
 userSchema.pre('remove', async function (next) {
   const user = this
   await RootCollection.deleteMany({ owner: user._id })
+  await Collection.deleteMany({ owner: user._id })
+  await Item.deleteMany({ owner: user._id })
+  await Attribute.deleteMany({ owner: user._id })
+  await Value.deleteMany({ owner: user._id })
+
   next()
 })
 

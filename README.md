@@ -344,3 +344,53 @@ body: {
 - ```status: 400 - message: { error: 'Can't find attribute for delete' }```
 - ```status: 400 - message: { error }```
 - ```status: 201 - message: { attribute }```
+
+# Endpoint /values
+
+## Stworzenie nowego value użytkownika (POST)
+
+**URL:** ```/values```
+
+**Auth:** Bearer Token
+
+**Body:**
+
+```
+body: {
+	value: String,
+	attribute: ObjectID
+	item: ObjectID
+}
+```
+
+**Responses:**
+
+- ```status: 400 - message { error: 'Can't find attribute by given id' }```
+- ```status: 400 - message { error: 'Can't find item by given id' }```
+- ```status: 400 - message { error: 'Given attribute have this value' }```
+- ```status: 400 - message { error }```
+- ```status: 201 - message { value }```
+
+## Update value użytkownika (PATCH)
+
+**URL:** ```/values/:id```
+
+**Auth:** Bearer Token
+
+**Body:**
+
+```
+body: {
+	removeItem: ObjectID,
+	addItem: ObjectID
+}
+```
+
+**Responses:**
+
+- ```status: 400 - message { error: 'Can't find item removed from value' }```
+- ```status: 400 - message { error: 'Can't find item added to value' }```
+- ```status: 400 - message { error: 'Added item have value belong to given value attribute' }```
+- ```status: 400 - message { error }```
+- ```status: 201 - message { value }```
+

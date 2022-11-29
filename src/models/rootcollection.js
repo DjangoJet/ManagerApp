@@ -27,7 +27,22 @@ rootcollectionSchema.virtual('collections', {
 
 rootcollectionSchema.pre('remove', async function (next) {
   const rootcollection = this
-  await Collection.deleteMany({ rootcollection: rootcollection._id })
+  const collections = await Collection.find({ rootcollection: rootcollection._id })
+  for (const collection of collections) {
+    await collection.populate('items')
+    await collection.populate('attributes')
+    for (const attribute of collection.attributes) {
+      await attribute.populate('values')
+      for (const value of attribute.values) {
+        await value.delete()
+      }
+      await attribute.delete()
+    }
+    for (const item of collection.items) {
+      await item.delete()
+    }
+    await collection.delete()
+  }
   next()
 })
 
