@@ -118,6 +118,17 @@ body: {
 - ```status: 201 - message: { collections }```
 - ```status: 400 - message: { error }```
 
+## Pobranie main collections należące do konkretnej rootcollection użytkownika (GET)
+
+**URL:** ```/rootcollections/collections/main/:id```
+
+**Auth:** Bearer Token
+
+**Responses:**
+
+- ```status: 201 - message: { collections }```
+- ```status: 400 - message: { error }```
+
 ## Stworzenie nowej rootcollection użytkownika (POST)
 
 **URL:** ```/rootcollections```
@@ -168,6 +179,17 @@ body: {
 - ```status: 400 - message: { error }```
 
 # Endpoint: /collections
+
+## Pobranie collection należącej do użytkownika (GET)
+
+**URL:** ```/collections/:id```
+
+**Auth:** Bearer Token
+
+**Responses:**
+
+- ```status: 201 - message: { collection }```
+- ```status: 400 - message: { error }```
 
 ## Pobranie wszystkich item należących do collection użytkownika (GET)
 

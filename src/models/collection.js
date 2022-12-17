@@ -28,6 +28,12 @@ const collectionSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 })
 
+collectionSchema.virtual('childrens', {
+  ref: 'Collection',
+  localField: '_id',
+  foreignField: 'parent'
+})
+
 collectionSchema.virtual('items', {
   ref: 'Item',
   localField: '_id',

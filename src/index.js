@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 require('./db/mongoose')
 
 const userRouter = require('./routers/user')
@@ -9,7 +10,11 @@ const attributeRouter = require('./routers/attribute')
 const valueRouter = require('./routers/value')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 4000
+
+app.use(cors({
+  origin: '*'
+}))
 
 app.use(express.json())
 

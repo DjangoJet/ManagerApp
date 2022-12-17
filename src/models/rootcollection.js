@@ -22,7 +22,7 @@ const rootcollectionSchema = new mongoose.Schema({
 rootcollectionSchema.virtual('collections', {
   ref: 'Collection',
   localField: '_id',
-  foreignField: 'rootCollection'
+  foreignField: 'rootcollection'
 })
 
 rootcollectionSchema.pre('remove', async function (next) {

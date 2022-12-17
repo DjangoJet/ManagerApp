@@ -8,7 +8,7 @@ exports.getRootCollections = async (req, res) => {
     await req.user.populate('rootcollections')
     res.status(201).send(req.user.rootcollections)
   } catch (e) {
-    res.status(400).send(e)
+    res.status(400).send({ error: e.message })
   }
 }
 
@@ -27,8 +27,19 @@ exports.getRootCollection = async (req, res) => {
 exports.getCollections = async (req, res) => {
   try {
     const rootcollection = await RootCollection.findOne({
-      _id: req.params.id, owner: req.user._id 
+      _id: req.params.id, owner: req.user._id
     }).populate('collections')
+    res.status(201).send(rootcollection.collections)
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+exports.getCollectionsMain = async (req, res) => {
+  try {
+    const rootcollection = await RootCollection.findOne({
+      _id: req.params.id, owner: req.user._id
+    }).populate({ path: 'collections', match: { parent: null } })
     res.status(201).send(rootcollection.collections)
   } catch (e) {
     res.status(400).send(e)
